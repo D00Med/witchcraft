@@ -553,7 +553,12 @@ minetest.register_node("witchcraft:potion_red", {
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
 	sounds = default.node_sound_glass_defaults(),
 	inventory_image = "witchcraft_potion_red.png",
-	on_use = minetest.item_eat(30, "vessels:glass_bottle"),
+	on_use = function(itemstack, player)
+	local health = player:get_hp();
+	player:set_hp(health+20)
+	itemstack:replace("bucket:bucket_empty")
+	return itemstack
+	end,
 })
 
 minetest.register_node("witchcraft:potion_red_2", {
@@ -572,7 +577,12 @@ minetest.register_node("witchcraft:potion_red_2", {
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
 	inventory_image = "witchcraft_potion_red.png^[colorize:black:50",
-	on_use = minetest.item_eat(100, "vessels:glass_bottle"),
+	on_use = function(itemstack, player)
+	local health = player:get_hp();
+	player:set_hp(health+50)
+	itemstack:replace("bucket:bucket_empty")
+	return itemstack
+	end,
 })
 
 minetest.register_node("witchcraft:potion_darkpurple", {
