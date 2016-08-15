@@ -336,7 +336,7 @@ witchcraft.pot = {
 	{"red", "grey", "default:gravel", "gred", "default:mese_crystal", "blue", "purple"},
 	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
 	{"brown", "red", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
-	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "moreplants:curlyfruit", "green", "yllwgrn"},
+	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "default:steelblock", "green", "yllwgrn"},
 	{"yellow", "yllwgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
 	{"yllwgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
 	{"green2", "darkpurple", "default:glass", "red", "default:gold_lump", "blue2", "aqua"},
@@ -556,7 +556,7 @@ minetest.register_node("witchcraft:potion_red", {
 	on_use = function(itemstack, player)
 	local health = player:get_hp();
 	player:set_hp(health+20)
-	itemstack:replace("bucket:bucket_empty")
+	itemstack:replace("vessels:glass_bottle")
 	return itemstack
 	end,
 })
@@ -580,7 +580,7 @@ minetest.register_node("witchcraft:potion_red_2", {
 	on_use = function(itemstack, player)
 	local health = player:get_hp();
 	player:set_hp(health+50)
-	itemstack:replace("bucket:bucket_empty")
+	itemstack:replace("vessels:glass_bottle")
 	return itemstack
 	end,
 })

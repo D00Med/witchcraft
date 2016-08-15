@@ -137,8 +137,8 @@ end
 minetest.register_craft({
 	output = 'witchcraft:scroll',
 	recipe = {
-		{'default:paper', 'default:diamond', 'default:paper'},
-		{'default:paper', 'default:paper', 'default:paper'},
+		{'default:paper', 'default:paper', ''},
+		{'default:paper', 'default:paper', ''},
 	}
 })
 
@@ -154,6 +154,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_icicle',
 	recipe = {
 		{'default:ice'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
@@ -162,6 +163,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_fireball',
 	recipe = {
 		{'default:obsidian_shard'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
@@ -170,6 +172,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_nature',
 	recipe = {
 		{'default:leaves'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
@@ -178,6 +181,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_day',
 	recipe = {
 		{'default:torch'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
@@ -186,6 +190,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_night',
 	recipe = {
 		{'default:coal_lump'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
@@ -195,6 +200,7 @@ minetest.register_craft({
 	output = 'witchcraft:scroll_lightning',
 	recipe = {
 		{'default:steel_ingot'},
+		{'default:diamond'},
 		{'witchcraft:scroll'},
 	}
 })
