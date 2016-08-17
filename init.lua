@@ -271,7 +271,7 @@ minetest.register_craft({
 	output = 'witchcraft:splash_yellwgrn',
 	recipe = {
 		{'vessels:glass_fragments'},
-		{'witchcraft:potion_yellgrn'},
+		{'witchcraft:potion_yllwgrn'},
 	}
 })
 
@@ -400,11 +400,11 @@ witchcraft.pot = {
 	{"darkpurple", "cyan", "flowers:mushroom_red", "green", "moreplants:weed", "yellow", "redbrown"},
 	{"purple", "blue2", "flowers:waterlily", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
 	{"magenta", "purple", "witchcraft:bottle_eyes", "darkpurple", "moreplants:mushroom", "purple", "darkpurple"},
-	{"red", "grey", "default:gravel", "red", "default:apple", "blue", "purple"},
+	{"red", "grey", "default:gravel", "yllwgrn", "default:flint", "blue", "purple"},
 	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
 	{"brown", "gred", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
 	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "default:steelblock", "green", "yllwgrn"},
-	{"yellow", "yellgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
+	{"yellow", "yllwgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
 	{"yllwgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
 	{"green2", "darkpurple", "default:glass", "red", "witchcraft:herb", "blue2", "aqua"},
 	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yllwgrn"},
@@ -413,7 +413,7 @@ witchcraft.pot = {
 	{"grey", "orange", "default:torch", "brown", "default:apple", "yllwgrn", "magenta"},
 	{"ggreen", "", "", "", "", "", ""},
 	{"gpurple", "", "", "", "", "", ""},
-	{"gred", "", "", "", "", "", ""},
+	{"gred", "red", "default:apple", "grey", "default:gravel", "", ""},
 	{"gcyan", "", "", "", "", "", ""},
 }
 
@@ -1710,7 +1710,7 @@ minetest.register_node("witchcraft:potion_brown_2", {
 
 
 --cannot get the potion to be removed from inventory on use?
-minetest.register_node("witchcraft:potion_yellgrn", {
+minetest.register_node("witchcraft:potion_yllwgrn", {
 	description = "Dodgy Potion",
 	drawtype = "plantlike",
 	tiles = {"witchcraft_potion_yellgrn.png"},
@@ -1732,7 +1732,7 @@ minetest.register_node("witchcraft:potion_yellgrn", {
 	end,
 })
 
-minetest.register_node("witchcraft:potion_yellgrn_2", {
+minetest.register_node("witchcraft:potion_yllwgrn_2", {
 	description = "Dodgy Potion (lv2)",
 	drawtype = "plantlike",
 	tiles = {"witchcraft_potion_yellgrn.png^[colorize:black:50"},
