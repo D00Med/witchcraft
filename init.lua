@@ -284,8 +284,75 @@ minetest.register_craft({
 })
 
 
+minetest.register_craft({
+	output = 'witchcraft:splash_purple',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_purple'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_magenta',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_magenta'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_cyan',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_cyan'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_red',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_red'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_green',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_green'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_grey',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_grey'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_brown',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_brown'},
+	}
+})
+minetest.register_craft({
+	output = 'witchcraft:splash_redbrown',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_redbrown'},
+	}
+})
 
---the all important cooking pot
+
+minetest.register_craft({
+	output = 'witchcraft:splash_ggreen',
+	recipe = {
+		{'vessels:glass_fragments'},
+		{'witchcraft:potion_ggreen'},
+	}
+})
+
+
+
+--empty cooking pot
 
 minetest.register_node("witchcraft:pot", {
 	description = "magic cooking pot",
@@ -333,13 +400,13 @@ witchcraft.pot = {
 	{"darkpurple", "cyan", "flowers:mushroom_red", "green", "moreplants:weed", "yellow", "redbrown"},
 	{"purple", "blue2", "flowers:waterlily", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
 	{"magenta", "purple", "witchcraft:bottle_eyes", "darkpurple", "moreplants:mushroom", "purple", "darkpurple"},
-	{"red", "grey", "default:gravel", "gred", "default:mese_crystal", "blue", "purple"},
+	{"red", "grey", "default:gravel", "red", "default:apple", "blue", "purple"},
 	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
-	{"brown", "red", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
+	{"brown", "gred", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
 	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "default:steelblock", "green", "yllwgrn"},
-	{"yellow", "yllwgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
+	{"yellow", "yellgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
 	{"yllwgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
-	{"green2", "darkpurple", "default:glass", "red", "default:gold_lump", "blue2", "aqua"},
+	{"green2", "darkpurple", "default:glass", "red", "witchcraft:herb", "blue2", "aqua"},
 	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yllwgrn"},
 	{"aqua", "", "", "", "", "blue", "cyan"},
 	{"cyan", "aqua", "default:diamond", "gcyan", "default:mese_crystal", "green", "yellow"},
@@ -350,7 +417,7 @@ witchcraft.pot = {
 	{"gcyan", "", "", "", "", "", ""},
 }
 
---the pot itself
+--potion pots
 
 for _, row in ipairs(witchcraft.pot) do
 local color = row[1]
@@ -535,7 +602,853 @@ minetest.register_abm({
 	end
 })
 
---potions and splash potions (level1)
+
+--splash effects
+
+minetest.register_entity("witchcraft:tnt_splash", {
+	textures = {"witchcraft_splash_yellgrn.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:tnt_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=3},
+						}, nil)
+					tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:tnt_splash" and n ~="default:obsidian" and n ~= "air" then	
+									local pos = self.object:getpos()
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									gaint = 1.0,
+									max_hear_distance = 20,
+									})
+									tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+										self.object:remove()
+									return
+								end
+							end
+						end
+					end
+			hit_node = function(self, pos, node)
+    local pos = self.object:getpos()
+		for dx=-4,4 do
+			for dy=-4,4 do
+				for dz=-4,4 do
+					local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+					local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+					local n = minetest.env:get_node(pos).name
+					if math.random(1, 50) <= 35 then
+						tnt.boom(n, {damage_radius=5,radius=3,ignore_protection=false})
+					end
+					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+										minetest.env:set_node(t, {name="fire:basic_flame"})
+					end
+				end
+			end
+		end
+		end
+		
+	end,
+})
+
+
+
+minetest.register_entity("witchcraft:fire_splash", {
+	textures = {"witchcraft_splash_orange.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:fire_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=1},
+						}, nil)
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:fire_splash" and n ~= "air" then
+										minetest.env:set_node(t, {name="fire:basic_flame"})
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+			hit_node = function(self, pos, node)
+    local pos = self.object:getpos()
+		for dx=-4,4 do
+			for dy=-4,4 do
+				for dz=-4,4 do
+					local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+					local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+					local n = minetest.env:get_node(pos).name
+					if math.random(1, 50) <= 1 then
+						minetest.env:remove_node(p)
+					end
+					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+										minetest.env:set_node(t, {name="fire:basic_flame"})
+					end
+				end
+			end
+		end
+		end
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:death_splash", {
+	textures = {"witchcraft_splash_grey.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:death_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=50},
+						}, nil)
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:death_splash" and n ~= "air" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:heal_splash", {
+	textures = {"witchcraft_splash_red.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:heal_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=-20},
+						}, nil)
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:heal_splash" and n ~= "air" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:slow_splash", {
+	textures = {"witchcraft_splash_redbrown.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:slow_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						local vel = obj:getvelocity()
+						obj:setvelocity({x=vel.x*0.5, y=vel.y*0.5, z=vel.z*0.5})
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:slow_splash" and n ~= "air" then
+									
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:fast_splash", {
+	textures = {"witchcraft_splash_magenta.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:fast_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						local vel = obj:getvelocity()
+						obj:setvelocity({x=vel.x*4, y=vel.y*1, z=vel.z*4})
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:fast_splash" and n ~= "air" then
+									
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:antigrav_splash", {
+	textures = {"witchcraft_splash_green.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:antigrav_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						local vel = obj:getvelocity()
+						obj:setvelocity({x=vel.x*1, y=vel.y*0.1, z=vel.z*1})
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:antigrav_splash" and n ~= "air" then
+									
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:jump_splash", {
+	textures = {"witchcraft_splash_cyan.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:jump_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						local vel = obj:getvelocity()
+						obj:setvelocity({x=vel.x*1, y=(vel.y+2)*3, z=vel.z*1})
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:jump_splash" and n ~= "air" then
+									
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:murky_splash", {
+	textures = {"witchcraft_splash_brown.png"},
+	velocity = 0.1,
+	damage = 2,
+	collisionbox = {0, 0, 0, 0, 0, 0},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(2, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
+			for k, obj in pairs(objs) do
+				if obj:get_luaentity() ~= nil then
+					if obj:get_luaentity().name ~= "witchcraft:murky_splash" and obj:get_luaentity().name ~= "__builtin:item" then
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=20},
+						}, nil)
+					self.object:remove()
+					end
+				end
+			end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n ~= "witchcraft:murky_splash" and n ~= "air" then
+									minetest.sound_play("default_break_glass.1", {
+									pos = self.object:getpos(),
+									max_hear_distance = 20,
+									gain = 10.0,
+									})
+										self.object:remove()
+								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
+									self.object:remove()
+									return
+								end
+							end
+						end
+					end
+   
+		
+	end,
+})
+
+minetest.register_entity("witchcraft:shadow_splash", {
+	textures = {"witchcraft_splash_ggreen.png"},
+	velocity = 0.1,
+	damage = 2,
+	physical = true,
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(5, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+			minetest.add_particlespawner(
+			50, --amount
+			1, --time
+			{x=pos.x-3, y=pos.y-3, z=pos.z-3}, --minpos
+			{x=pos.x+3, y=pos.y+3, z=pos.z+3}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.1,y=0.2,z=-0.1}, --minacc
+			{x=0.1,y=0.2,z=0.1}, --maxacc
+			5, --minexptime
+			10, --maxexptime
+			10, --minsize
+			20, --maxsize
+			false, --collisiondetection
+			"witchcraft_pot_bottom.png^[colorize:black:200" --texture
+		)
+	end,
+})
+
+minetest.register_entity("witchcraft:smoke_splash", {
+	textures = {"witchcraft_splash_purple.png"},
+	velocity = 0.1,
+	damage = 2,
+	physical = true,
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	on_step = function(self, obj, pos)		
+		local remove = minetest.after(10, function() 
+		self.object:remove()
+		end)
+		local pos = self.object:getpos()
+		local velo = self.object:getvelocity()
+		self.object:setvelocity({x=velo.x*0.9,y=velo.y,z=velo.z*0.9})
+			minetest.add_particlespawner(
+			10, --amount
+			1, --time
+			{x=pos.x-1, y=pos.y-1, z=pos.z-1}, --minpos
+			{x=pos.x+1, y=pos.y+1, z=pos.z+1}, --maxpos
+			{x=-1, y=-0, z=-1}, --minvel
+			{x=1, y=0, z=1}, --maxvel
+			{x=-0.5,y=2,z=-0.5}, --minacc
+			{x=0.5,y=3,z=0.5}, --maxacc
+			2, --minexptime
+			4, --maxexptime
+			10, --minsize
+			20, --maxsize
+			false, --collisiondetection
+			"witchcraft_smoke.png" --texture
+		)
+		
+	end,
+})
+
+--splash potions
+
+minetest.register_node("witchcraft:splash_orange", {
+	description = "Dragon Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_orange.png"},
+	wield_image = "witchcraft_splash_orange.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_orange.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*6,y=dir.y*3.5,z=dir.z*6}
+	local acc = {x=0,y=-9.8,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+2+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:fire_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_purple", {
+	description = "Smokey Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_purple.png"},
+	wield_image = "witchcraft_splash_purple.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_purple.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9.8,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z}, "witchcraft:smoke_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_red", {
+	description = "Healthy Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_red.png"},
+	wield_image = "witchcraft_splash_red.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_red.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:heal_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_green", {
+	description = "Volatile Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_green.png"},
+	wield_image = "witchcraft_splash_green.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_green.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:jump_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_cyan", {
+	description = "Light Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_cyan.png"},
+	wield_image = "witchcraft_splash_cyan.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_cyan.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:antigrav_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_redbrown", {
+	description = "Thick Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_redbrown.png"},
+	wield_image = "witchcraft_splash_redbrown.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_redbrown.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:slow_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_magenta", {
+	description = "Fast Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_magenta.png"},
+	wield_image = "witchcraft_splash_magenta.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_magenta.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*13,y=dir.y*2.5,z=dir.z*13}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:fast_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_brown", {
+	description = "Murky Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_brown.png"},
+	wield_image = "witchcraft_splash_brown.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_brown.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:murky_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_grey", {
+	description = "Death Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_grey.png"},
+	wield_image = "witchcraft_splash_grey.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_grey.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*9,y=dir.y*3.5,z=dir.z*9}
+	local acc = {x=0,y=-9,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*2,y=playerpos.y+2+dir.y,z=playerpos.z+dir.z*2}, "witchcraft:death_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+
+
+minetest.register_node("witchcraft:splash_ggreen", {
+	description = "Darkness Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_ggreen.png"},
+	wield_image = "witchcraft_splash_ggreen.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_ggreen.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*6,y=dir.y*3.5,z=dir.z*6}
+	local acc = {x=0,y=-9.8,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+2+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:shadow_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+minetest.register_node("witchcraft:splash_yellwgrn", {
+	description = "Dodgy Splash Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_splash_yellgrn.png"},
+	wield_image = "witchcraft_splash_yellgrn.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_splash_yellgrn.png",
+	on_use = function(item, placer, pos)
+	local dir = placer:get_look_dir();
+	local playerpos = placer:getpos();
+	local vec = {x=dir.x*7,y=dir.y*3.5,z=dir.z*7}
+	local acc = {x=0,y=-9.8,z=0}
+	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+2+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:tnt_splash")
+	obj:setvelocity(vec)
+	obj:setacceleration(acc)
+		item:take_item()
+		return item
+	end,
+})
+
+--potions (level 1 and 2)
 
 minetest.register_node("witchcraft:potion_red", {
 	description = "Tasty Potion",
@@ -601,6 +1514,7 @@ minetest.register_node("witchcraft:potion_darkpurple", {
 	wield_image = "witchcraft_potion_darkpurple.png",
 	inventory_image = "witchcraft_potion_darkpurple.png",
 	on_use = function(itemstack, user)
+		--invisibility effect from invisibility potion by Tenplus1
 
 		local pos = user:getpos()
 
@@ -920,137 +1834,6 @@ minetest.register_entity("witchcraft:fire", {
 })
 
 
-
-minetest.register_entity("witchcraft:tnt_splash", {
-	textures = {"witchcraft_splash_yellgrn.png"},
-	velocity = 0.1,
-	damage = 2,
-	collisionbox = {0, 0, 0, 0, 0, 0},
-	on_step = function(self, obj, pos)		
-		local remove = minetest.after(2, function() 
-		self.object:remove()
-		end)
-		local pos = self.object:getpos()
-		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
-			for k, obj in pairs(objs) do
-				if obj:get_luaentity() ~= nil then
-					if obj:get_luaentity().name ~= "witchcraft:tnt_splash" and obj:get_luaentity().name ~= "__builtin:item" then
-						obj:punch(self.object, 1.0, {
-							full_punch_interval=1.0,
-							damage_groups={fleshy=3},
-						}, nil)
-					self.object:remove()
-					end
-				end
-			end
-			for dx=0,1 do
-						for dy=0,1 do
-							for dz=0,1 do
-								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
-								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-								local n = minetest.env:get_node(p).name
-								if n ~= "witchcraft:tnt_splash" and n ~="default:obsidian" and n ~= "air" then	
-									local pos = self.object:getpos()
-									minetest.sound_play("default_break_glass.1.ogg", {
-									pos = self.object:getpos(),
-									gaint = 1.0,
-									max_hear_distance = 20,
-									})
-									tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
-										self.object:remove()
-									return
-								end
-							end
-						end
-					end
-			hit_node = function(self, pos, node)
-    local pos = self.object:getpos()
-		for dx=-4,4 do
-			for dy=-4,4 do
-				for dz=-4,4 do
-					local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local n = minetest.env:get_node(pos).name
-					if math.random(1, 50) <= 35 then
-						tnt.boom(n, {damage_radius=5,radius=3,ignore_protection=false})
-					end
-					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
-										minetest.env:set_node(t, {name="fire:basic_flame"})
-					end
-				end
-			end
-		end
-		end
-		
-	end,
-})
-
-
-minetest.register_entity("witchcraft:fire_splash", {
-	textures = {"witchcraft_splash_orange.png"},
-	velocity = 0.1,
-	damage = 2,
-	collisionbox = {0, 0, 0, 0, 0, 0},
-	on_step = function(self, obj, pos)		
-		local remove = minetest.after(2, function() 
-		self.object:remove()
-		end)
-		local pos = self.object:getpos()
-		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)	
-			for k, obj in pairs(objs) do
-				if obj:get_luaentity() ~= nil then
-					if obj:get_luaentity().name ~= "witchcraft:fire_splash" and obj:get_luaentity().name ~= "__builtin:item" then
-						obj:punch(self.object, 1.0, {
-							full_punch_interval=1.0,
-							damage_groups={fleshy=1},
-						}, nil)
-					self.object:remove()
-					end
-				end
-			end
-			for dx=0,1 do
-						for dy=0,1 do
-							for dz=0,1 do
-								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
-								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-								local n = minetest.env:get_node(p).name
-								if n ~= "witchcraft:fire_splash" and n ~= "air" then
-										minetest.env:set_node(t, {name="fire:basic_flame"})
-									minetest.sound_play("default_break_glass.1", {
-									pos = self.object:getpos(),
-									max_hear_distance = 20,
-									gain = 10.0,
-									})
-										self.object:remove()
-								elseif n =="default:dirt_with_grass" or n =="default:dirt_with_dry_grass" then
-									self.object:remove()
-									return
-								end
-							end
-						end
-					end
-			hit_node = function(self, pos, node)
-    local pos = self.object:getpos()
-		for dx=-4,4 do
-			for dy=-4,4 do
-				for dz=-4,4 do
-					local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-					local n = minetest.env:get_node(pos).name
-					if math.random(1, 50) <= 1 then
-						minetest.env:remove_node(p)
-					end
-					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
-										minetest.env:set_node(t, {name="fire:basic_flame"})
-					end
-				end
-			end
-		end
-		end
-		
-	end,
-})
-
 minetest.register_node("witchcraft:potion_orange", {
 	description = "Dragon Potion",
 	drawtype = "plantlike",
@@ -1289,6 +2072,55 @@ minetest.register_node("witchcraft:potion_gred", {
 
 register_food("witchcraft:potion_gpurple", 10)
 register_food("witchcraft:potion_gred", -4)
+else
+
+	minetest.register_node("witchcraft:potion_gred", {
+	description = "Filling Potion (better with hunger mod)",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_red.png"},
+	wield_image = "witchcraft_potion_red.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_red.png",
+	on_use = function(itemstack, player)
+	local health = player:get_hp();
+	player:set_hp(health+20)
+	itemstack:replace("vessels:glass_bottle")
+	return itemstack
+	end,
+	
+	minetest.register_node("witchcraft:potion_gred", {
+	description = "Hunger Potion (better with hunger mod)",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_gred.png"},
+	wield_image = "witchcraft_potion_gred.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_gred.png",
+	on_use = function(itemstack, player)
+	local health = player:get_hp();
+	player:set_hp(health+10)
+	itemstack:replace("vessels:glass_bottle")
+	return itemstack
+	end,
+})
+})
 end
 
 minetest.register_node("witchcraft:potion_purple_2", {
@@ -1402,7 +2234,7 @@ minetest.register_node("witchcraft:potion_blue", {
 	end
 })
 
-if minetest.get_modpath("farming") then
+if minetest.get_modpath("farming_redo") then
 minetest.register_node("witchcraft:potion_green", {
 	description = "Melon Potion",
 	drawtype = "plantlike",
@@ -1425,6 +2257,54 @@ minetest.register_node("witchcraft:potion_green", {
 				minetest.get_node(pointed_thing.above).name == "air" then
 			if not minetest.is_protected(pointed_thing.above, player) then
 				minetest.set_node(pointed_thing.above, {name="farming:melon_8"})
+			else
+				minetest.chat_send_player(player, "This area is protected.")
+			end
+		end
+		local playerpos = user:getpos();
+			minetest.add_particlespawner(
+			5, --amount
+			0.1, --time
+			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.5,y=4,z=-0.5}, --minacc
+			{x=0.5,y=4,z=0.5}, --maxacc
+			0.5, --minexptime
+			1, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_effect.png" --texture
+		)
+		item:replace("vessels:glass_bottle")
+		return item
+	end
+})
+else
+minetest.register_node("witchcraft:potion_green", {
+	description = "Plant Potion (destructive!)",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_green.png"},
+	wield_image = "witchcraft_potion_green.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_green.png",
+	on_use = function(item, user, pointed_thing)
+		local player = user:get_player_name()
+		if pointed_thing.type == "node" and
+				minetest.get_node(pointed_thing.above).name == "air" then
+			if not minetest.is_protected(pointed_thing.above, player) then
+				default.grow_new_jungle_tree(pointed_thing.above)
 			else
 				minetest.chat_send_player(player, "This area is protected.")
 			end
@@ -1590,6 +2470,52 @@ minetest.register_node("witchcraft:potion_aqua", {
 	minetest.env:add_entity(pos, "experience:orb")
 	minetest.env:add_entity(pos, "experience:orb")
 	minetest.env:add_entity(pos, "experience:orb")
+	
+		item:replace("vessels:glass_bottle")
+		return item
+	end
+})
+else
+minetest.register_node("witchcraft:potion_aqua", {
+	description = "Complex Potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_aqua.png"},
+	wield_image = "witchcraft_potion_aqua.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_aqua.png",
+	on_use = function(item, placer, pos)
+	local pos = placer:getpos();
+	minetest.add_particlespawner(
+			6, --amount
+			0.1, --time
+			{x=pos.x-1, y=pos.y+0.5, z=pos.z-1}, --minpos
+			{x=pos.x+1, y=pos.y+1, z=pos.z+1}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.5,y=2,z=-0.5}, --minacc
+			{x=0.5,y=2,z=0.5}, --maxacc
+			0.5, --minexptime
+			1, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_effect.png" --texture
+		)
+		minetest.add_item(pos, "default:steel_ingot")
+		minetest.add_item(pos, "witchcraft:herb")
+		minetest.add_item(pos, "default:mese_crystal")
+		minetest.add_item(pos, "default:gold_lump")
+		minetest.add_item(pos, "farming:bread")
+		minetest.add_item(pos, "default:copper_ingot")
 	
 		item:replace("vessels:glass_bottle")
 		return item
