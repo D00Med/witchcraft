@@ -2552,6 +2552,7 @@ minetest.register_node("witchcraft:potion_magenta", {
 
 		})
 		local reset = minetest.after(10, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2562,6 +2563,7 @@ minetest.register_node("witchcraft:potion_magenta", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 
 		local playerpos = user:getpos();
@@ -2615,6 +2617,7 @@ minetest.register_node("witchcraft:potion_magenta_2", {
 
 		})
 		local reset = minetest.after(10, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2625,6 +2628,7 @@ minetest.register_node("witchcraft:potion_magenta_2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 
 		local playerpos = user:getpos();
@@ -2678,6 +2682,7 @@ minetest.register_node("witchcraft:potion_cyan", {
 
 		})
 		local reset = minetest.after(10, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2688,6 +2693,7 @@ minetest.register_node("witchcraft:potion_cyan", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -2781,6 +2787,7 @@ minetest.register_node("witchcraft:potion_cyan_2", {
 
 		})
 		local reset = minetest.after(20, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2791,6 +2798,7 @@ minetest.register_node("witchcraft:potion_cyan_2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -2843,6 +2851,7 @@ minetest.register_node("witchcraft:potion_green2", {
 
 		})
 		local reset = minetest.after(6, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2853,6 +2862,7 @@ minetest.register_node("witchcraft:potion_green2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -2945,6 +2955,7 @@ minetest.register_node("witchcraft:potion_green2_2", {
 
 		})
 		local reset = minetest.after(10, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -2955,6 +2966,7 @@ minetest.register_node("witchcraft:potion_green2_2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3007,6 +3019,7 @@ minetest.register_node("witchcraft:potion_redbrown", {
 
 		})
 		local reset = minetest.after(10, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -3017,6 +3030,7 @@ minetest.register_node("witchcraft:potion_redbrown", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3069,6 +3083,7 @@ minetest.register_node("witchcraft:potion_redbrown_2", {
 
 		})
 		local reset = minetest.after(15, function()
+		if not user == nil then
 			user:set_breath(11)
 			local effect = user:set_physics_override({
 
@@ -3079,6 +3094,7 @@ minetest.register_node("witchcraft:potion_redbrown_2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3133,6 +3149,7 @@ minetest.register_node("witchcraft:potion_blue2", {
 		})
 	end
 		local reset = minetest.after(20, function()
+		if not user == nil then
 			user:set_physics_override({
 
 		speed = 1.0, -- multiplier to default value
@@ -3142,6 +3159,7 @@ minetest.register_node("witchcraft:potion_blue2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3196,6 +3214,7 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 		})
 	end
 		local reset = minetest.after(15, function()
+		if not user == nil then
 			user:set_physics_override({
 
 		speed = 1.0, -- multiplier to default value
@@ -3205,6 +3224,7 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 		sneak_glitch = false, -- whether player can use the sneak glitch 
 
 		})
+		end
 		end)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
