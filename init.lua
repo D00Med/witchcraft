@@ -2074,11 +2074,11 @@ register_food("witchcraft:potion_gpurple", 10)
 register_food("witchcraft:potion_gred", -4)
 else
 
-	minetest.register_node("witchcraft:potion_gred", {
+	minetest.register_node("witchcraft:potion_gpurple", {
 	description = "Filling Potion (better with hunger mod)",
 	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_red.png"},
-	wield_image = "witchcraft_potion_red.png",
+	tiles = {"witchcraft_potion_purple.png"},
+	wield_image = "witchcraft_potion_purple.png",
 	paramtype = "light",
 	stack_max = 1,
 	is_ground_content = false,
@@ -2089,7 +2089,7 @@ else
 	},
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
 	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_red.png",
+	inventory_image = "witchcraft_potion_purple.png",
 	on_use = function(itemstack, player)
 	local health = player:get_hp();
 	player:set_hp(health+20)
