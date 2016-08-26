@@ -171,6 +171,21 @@ minetest.register_craftitem("witchcraft:herb", {
 	inventory_image = "witchcraft_herbs.png"
 })
 
+minetest.register_craftitem("witchcraft:tooth", {
+	description = "tooth",
+	inventory_image = "witchcraft_tooth.png"
+})
+
+minetest.register_craftitem("witchcraft:horn", {
+	description = "horn",
+	inventory_image = "witchcraft_horn.png"
+})
+
+minetest.register_craftitem("witchcraft:bone", {
+	description = "bone",
+	inventory_image = "witchcraft_bone.png"
+})
+
 --crafting
 
 minetest.register_craft({
@@ -264,6 +279,146 @@ minetest.register_craft({
 		{'', 'default:copper_lump', ''},
 	}
 })
+
+minetest.register_craft({
+	output = 'witchcraft:mortar',
+	recipe = {
+		{'default:stone', '', 'default:stone'},
+		{'default:stone', '', 'default:stone'},
+		{'', 'default:stone', ''},
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:pentagram',
+	recipe = {
+		{'default:torch', 'default:clay', 'default:torch'},
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:small_bottle',
+	recipe = {
+		{'vessels:glass_fragments', 'vessels:glass_fragments', 'vessels:glass_fragments'},
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:bottle_medicine 2',
+	recipe = {
+		{'witchcraft:small_bottle', 'witchcraft:potion_red', 'witchcraft:small_bottle'},
+	},
+	replacements = {
+		{"witchcraft:potion_red", "vessels:glass_bottle"}
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:mud_bottle',
+	recipe = {
+		{'default:dirt'},
+		{'witchcraft:small_bottle'},
+	},
+})
+
+minetest.register_craft({
+	output = 'witchcraft:bone_bottle',
+	recipe = {
+		{'bones:bones'},
+		{'witchcraft:small_bottle'},
+	},
+})
+
+minetest.register_craft({
+	output = 'witchcraft:herb_bottle',
+	recipe = {
+		{'witchcraft:herb'},
+		{'witchcraft:small_bottle'},
+	},
+})
+
+minetest.register_craft({
+	output = 'witchcraft:slime_bottle',
+	recipe = {
+		{'witchcraft:bottle_slime'},
+		{'witchcraft:small_bottle'},
+	},
+	replacements = {
+		{"witchcraft:bottle_slime", "vessels:drinking_glass"}
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:herb',
+	recipe = {
+		{'witchcraft:herb_bottle'},
+	},
+	replacements = {
+		{"witchcraft:herb_bottle", "witchcraft:small_bottle"}
+	}
+})
+
+minetest.register_craft({
+	output = 'bones:bones',
+	recipe = {
+		{'witchcraft:bone_bottle'},
+	},
+	replacements = {
+		{"witchcraft:bone_bottle", "witchcraft:small_bottle"}
+	}
+})
+
+minetest.register_craft({
+	output = 'default:dirt',
+	recipe = {
+		{'witchcraft:mud_bottle'},
+	},
+	replacements = {
+		{"witchcraft:mud_bottle", "witchcraft:small_bottle"}
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:bottle_slime',
+	recipe = {
+		{'witchcraft:slime_bottle'},
+	},
+	replacements = {
+		{"witchcraft:slime_bottle", "witchcraft:small_bottle"}
+	}
+})
+
+minetest.register_craft({
+	output = 'witchcraft:slime_bottle',
+	recipe = {
+		{'witchcraft:bottle_slime'},
+		{'witchcraft:small_bottle'},
+	},
+})
+
+minetest.register_craft({
+	output = 'vessels:glass_fragments 3',
+	recipe = {
+		{'default:glass'},
+	},
+})
+
+minetest.register_craft({
+	output = 'witchcraft:bone 4',
+	recipe = {
+		{'bones:bones', 'bones:bones'},
+	},
+})
+
+--teeth from sand, maybe fossilised?
+minetest.register_craft({
+	output = 'witchcraft:tooth 1',
+	recipe = {
+		{'default:sand'},
+	},
+})
+
+
 
 --splash potions crafting
 
@@ -601,6 +756,123 @@ minetest.register_abm({
 		})
 	end
 })
+
+--small bottle and contents
+
+minetest.register_node("witchcraft:small_bottle", {
+	description = "Small bottle",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_small_bottle.png"},
+	wield_image = "witchcraft_small_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_small_bottle.png",
+})
+
+minetest.register_node("witchcraft:bone_bottle", {
+	description = "Small bottle of bone dust",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_bone_bottle.png"},
+	wield_image = "witchcraft_bone_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_bone_bottle.png",
+})
+
+minetest.register_node("witchcraft:slime_bottle", {
+	description = "Small bottle of slime",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_slime_bottle.png"},
+	wield_image = "witchcraft_slime_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_slime_bottle.png",
+})
+
+minetest.register_node("witchcraft:herb_bottle", {
+	description = "Small bottle of herbs",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_herb_bottle.png"},
+	wield_image = "witchcraft_herb_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_herb_bottle.png",
+})
+
+minetest.register_node("witchcraft:mud_bottle", {
+	description = "Small bottle of mud",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_mud_bottle.png"},
+	wield_image = "witchcraft_mud_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_mud_bottle.png",
+})
+
+minetest.register_node("witchcraft:bottle_medicine", {
+	description = "Small bottle of Medicine",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_medicine_bottle.png"},
+	wield_image = "witchcraft_medicine_bottle.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_medicine_bottle.png",
+	on_use = function(itemstack, player)
+	local health = player:get_hp();
+	player:set_hp(health+10)
+	itemstack:replace("witchcraft:small_bottle")
+	return itemstack
+	end,
+})
+
 
 
 --splash effects
