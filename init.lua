@@ -1125,6 +1125,97 @@ minetest.register_entity("witchcraft:smoke_splash", {
 	end,
 })
 
+--player effects
+
+playereffects.register_effect_type("potion_speed_lv1", "High speed", nil, {"speed"}, 
+	function(player)
+		player:set_physics_override(2,nil,nil)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,nil)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_speed_lv2", "High speed", nil, {"speed"}, 
+	function(player)
+		player:set_physics_override(2.5,nil,nil)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,nil)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_jump_lvx", "High Jump", nil, {"jump"}, 
+	function(player)
+		player:set_physics_override(nil,1.5,0.8)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(nil,1,1)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_antigrav_lvx", "Light weight", nil, {"gravity"}, 
+	function(player)
+		player:set_physics_override(nil,nil,0.1)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(nil,nil,1)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_slow_lv1", "Low speed", nil, {"speed"}, 
+	function(player)
+		player:set_physics_override(0.5,nil,nil)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,nil)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_slow_lv2", "Low speed", nil, {"speed"}, 
+	function(player)
+		player:set_physics_override(0.4,nil,nil)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,nil)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_swim_lv1", "Fast Swim", nil, {"swim"}, 
+	function(player)
+		player:set_physics_override(3,nil,nil)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,nil)
+	end,
+	true
+)
+
+playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"}, 
+	function(player)
+		player:set_physics_override(3,nil,4)
+	end,
+	
+	function(effect, player)
+		player:set_physics_override(1,nil,1)
+	end,
+	true
+)
+
+
 --splash potions
 
 minetest.register_node("witchcraft:splash_orange", {
@@ -2542,29 +2633,7 @@ minetest.register_node("witchcraft:potion_magenta", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 2.0, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(10, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_speed_lv1", 10, user)
 
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -2607,29 +2676,7 @@ minetest.register_node("witchcraft:potion_magenta_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 2.5, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(10, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_speed_lv2", 10, user)
 
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -2672,29 +2719,7 @@ minetest.register_node("witchcraft:potion_cyan", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 0.1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(10, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_antigrav_lvx", 10, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -2777,29 +2802,7 @@ minetest.register_node("witchcraft:potion_cyan_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 0.1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(20, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_antigrav_lvx", 20, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -2841,29 +2844,7 @@ minetest.register_node("witchcraft:potion_green2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.5, -- multiplier to default value
-		gravity = 0.8, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(6, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_jump_lvx", 6, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -2945,29 +2926,7 @@ minetest.register_node("witchcraft:potion_green2_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.5, -- multiplier to default value
-		gravity = 0.8, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(10, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_jump_lvx", 10, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3009,29 +2968,7 @@ minetest.register_node("witchcraft:potion_redbrown", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 0.5, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(10, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_slow_lv1", 11, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3073,29 +3010,7 @@ minetest.register_node("witchcraft:potion_redbrown_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		local effect = user:set_physics_override({
-
-		speed = 0.4, -- multiplier to default value
-		jump = 1, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		local reset = minetest.after(15, function()
-		if not user == nil then
-			user:set_breath(11)
-			local effect = user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_slow_lv2", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3138,29 +3053,7 @@ minetest.register_node("witchcraft:potion_blue2", {
 		local player = user:get_player_name()
 		local breath = user:get_breath()
 	if breath <= 10 then
-		local spd = user:set_physics_override({
-
-		speed = 3, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1.0, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-	end
-		local reset = minetest.after(20, function()
-		if not user == nil then
-			user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1.0, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_swim_lv1", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3180,6 +3073,7 @@ minetest.register_node("witchcraft:potion_blue2", {
 		)
 		item:replace("vessels:glass_bottle")
 	return item
+	end
 	end
 })
 
@@ -3203,29 +3097,7 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 		local player = user:get_player_name()
 		local breath = user:get_breath()
 	if breath <= 10 then
-		local spd = user:set_physics_override({
-
-		speed = 3, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 4.0, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-	end
-		local reset = minetest.after(15, function()
-		if not user == nil then
-			user:set_physics_override({
-
-		speed = 1.0, -- multiplier to default value
-		jump = 1.0, -- multiplier to default value
-		gravity = 1.0, -- multiplier to default value
-		sneak = true, -- whether player can sneak
-		sneak_glitch = false, -- whether player can use the sneak glitch 
-
-		})
-		end
-		end)
+		    playereffects.apply_effect_type("potion_swim_lv2", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3245,6 +3117,7 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 		)
 		item:replace("vessels:glass_bottle")
 	return item
+	end
 	end
 })
 
@@ -3300,6 +3173,62 @@ invisible = function(player, toggle)
 	player:set_properties(prop)
 
 end
+
+--decorative nodes
+
+minetest.register_node("witchcraft:mortar", {
+	description = "mortar and pestle",
+	tiles = {
+		"default_stone.png",
+		"default_stone.png",
+		"default_stone.png",
+		"default_stone.png",
+		"default_stone.png",
+		"default_stone.png"
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.25, -0.5, -0.25, 0.25, -0.4375, 0.25}, -- NodeBox1
+			{-0.1875, -0.4375, -0.1875, 0.1875, -0.375, 0.1875}, -- NodeBox2
+			{-0.3125, -0.375, -0.3125, -0.1875, 0.125, 0.3125}, -- NodeBox3
+			{0.1875, -0.375, -0.3125, 0.3125, 0.125, 0.3125}, -- NodeBox4
+			{-0.3125, -0.375, -0.3125, 0.3125, 0.125, -0.1875}, -- NodeBox5
+			{-0.3125, -0.375, 0.1875, 0.3125, 0.125, 0.3125}, -- NodeBox6
+			{-0.1875, -0.375, -0.1875, 0.25, -0.0625, 0.1875}, -- NodeBox7
+			{-0.3125, -0.5, -0.5, 0.3125, -0.375, -0.375}, -- NodeBox8
+		}
+	},
+	groups = {cracky=1, oddly_breakable_by_hand=1}
+})
+
+minetest.register_node("witchcraft:pentagram", {
+	description = "pentagram",
+	drawtype = "signlike",
+	visual_scale = 3.0,
+	tiles = {"witchcraft_pentagram.png"},
+	inventory_image = "witchcraft_pentagram.png",
+	use_texture_alpha = true,
+	paramtype = "light",
+	paramtype2 = "wallmounted",
+	sunlight_propagates = true,	
+	light_source = 50,
+	walkable = false,
+	is_ground_content = true,
+	selection_box = {
+		type = "wallmounted",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5}
+	},
+	on_rightclick = function(pos, node, _)
+	if minetest.get_modpath("horror") and minetest.get_modpath("mobs") then
+		minetest.env:add_entity(pos, "horror:werewolf")
+		end
+	end,
+	groups = {cracky=3,dig_immediate=3},
+})
 
 --other stuff
 

@@ -7,3 +7,4 @@ lightning?
 pmobs?
 hud_hunger?
 moreplants?
+playereffects?
