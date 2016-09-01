@@ -8,3 +8,4 @@ pmobs?
 hud_hunger?
 moreplants?
 playereffects?
+horror?

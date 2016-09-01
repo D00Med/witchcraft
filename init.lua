@@ -1407,7 +1407,7 @@ playereffects.register_effect_type("potion_speed_lv1", "High speed", nil, {"spee
 	function(effect, player)
 		player:set_physics_override(1,nil,nil)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_speed_lv2", "High speed", nil, {"speed"}, 
@@ -1418,7 +1418,7 @@ playereffects.register_effect_type("potion_speed_lv2", "High speed", nil, {"spee
 	function(effect, player)
 		player:set_physics_override(1,nil,nil)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_jump_lvx", "High Jump", nil, {"jump"}, 
@@ -1429,7 +1429,7 @@ playereffects.register_effect_type("potion_jump_lvx", "High Jump", nil, {"jump"}
 	function(effect, player)
 		player:set_physics_override(nil,1,1)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_antigrav_lvx", "Light weight", nil, {"gravity"}, 
@@ -1440,7 +1440,7 @@ playereffects.register_effect_type("potion_antigrav_lvx", "Light weight", nil, {
 	function(effect, player)
 		player:set_physics_override(nil,nil,1)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_slow_lv1", "Low speed", nil, {"speed"}, 
@@ -1451,7 +1451,7 @@ playereffects.register_effect_type("potion_slow_lv1", "Low speed", nil, {"speed"
 	function(effect, player)
 		player:set_physics_override(1,nil,nil)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_slow_lv2", "Low speed", nil, {"speed"}, 
@@ -1462,7 +1462,7 @@ playereffects.register_effect_type("potion_slow_lv2", "Low speed", nil, {"speed"
 	function(effect, player)
 		player:set_physics_override(1,nil,nil)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_swim_lv1", "Fast Swim", nil, {"swim"}, 
@@ -1473,7 +1473,7 @@ playereffects.register_effect_type("potion_swim_lv1", "Fast Swim", nil, {"swim"}
 	function(effect, player)
 		player:set_physics_override(1,nil,nil)
 	end,
-	true
+	false
 )
 
 playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"}, 
@@ -1484,7 +1484,7 @@ playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"},
 	function(effect, player)
 		player:set_physics_override(1,nil,1)
 	end,
-	true
+	false
 )
 
 
@@ -3477,6 +3477,14 @@ minetest.register_node("witchcraft:mortar", {
 	groups = {cracky=1, oddly_breakable_by_hand=1}
 })
 
+minetest.register_node("witchcraft:pentablock", {
+	description = "Pentagram block",
+	tiles = {
+		"witchcraft_pentablock.png",
+	},
+	groups = {cracky=1, oddly_breakable_by_hand=1}
+})
+
 minetest.register_node("witchcraft:pentagram", {
 	description = "pentagram",
 	drawtype = "signlike",
@@ -3486,7 +3494,7 @@ minetest.register_node("witchcraft:pentagram", {
 	use_texture_alpha = true,
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	sunlight_propagates = true,	
+	sunlight_propagates = false,	
 	light_source = 50,
 	walkable = false,
 	is_ground_content = true,
@@ -3495,11 +3503,87 @@ minetest.register_node("witchcraft:pentagram", {
 		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5}
 	},
 	on_rightclick = function(pos, node, _)
-	if minetest.get_modpath("horror") and minetest.get_modpath("mobs") then
-		minetest.env:add_entity(pos, "horror:werewolf")
+	if minetest.get_modpath("mobs") then
+		minetest.after(0.5, function()
+		minetest.set_node(pos, {name="witchcraft:portal", param2=node.param2})
+		minetest.add_particlespawner(
+			25, --amount
+			1, --time
+			{x=pos.x-1, y=pos.y, z=pos.z-1}, --minpos
+			{x=pos.x+1, y=pos.y, z=pos.z+1}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.5,y=1,z=-0.5}, --minacc
+			{x=0.5,y=1,z=0.5}, --maxacc
+			1, --minexptime
+			1.5, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_effect.png^[colorize:green:400" --texture
+		)
+		end)
 		end
 	end,
 	groups = {cracky=3,dig_immediate=3},
+})
+
+minetest.register_node("witchcraft:portal", {
+	description = "portal",
+	drawtype = "signlike",
+	visual_scale = 3.0,
+	tiles = {"witchcraft_portal.png"},
+	inventory_image = "witchcraft_portal.png",
+	use_texture_alpha = true,
+	paramtype = "light",
+	paramtype2 = "wallmounted",
+	sunlight_propagates = false,	
+	light_source = 50,
+	walkable = false,
+	is_ground_content = true,
+	selection_box = {
+		type = "wallmounted",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5}
+	},
+	on_construct = function(pos, node, _)
+		minetest.after(1, function()
+		if minetest.get_modpath("horror") then
+		minetest.env:add_entity(pos, "horror:werewolf")
+		elseif minetest.get_modpath("dmobs") then
+		minetest.env:add_entity(pos, "dmobs:owl")
+		elseif minetest.get_modpath("mobs_animal") then
+		minetest.env:add_entity(pos, "mobs_animal:kitten")
+		elseif minetest.get_modpath("mobs_monster") then
+		minetest.env:add_entity(pos, "mobs_monster:oerkki")
+		elseif minetest.get_modpath("pmobs") then
+		minetest.env:add_entity(pos, "pmobs:wolf")
+		end
+		minetest.remove_node(pos)
+		end)
+	end,
+	groups = {cracky=3,dig_immediate=3, not_in_creative_inventory=1},
+})
+
+minetest.register_node("witchcraft:candle", {
+	description = "red candle",
+	tiles = {
+		"witchcraft_candle_top.png",
+		"witchcraft_candle_top.png",
+		"witchcraft_candle.png",
+		"witchcraft_candle.png",
+		"witchcraft_candle.png",
+		"witchcraft_candle.png"
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.1875, -0.5, -0.1875, 0.1875, -0.0625, 0.1875}, -- NodeBox1
+			{-0.03125, -0.5, -0.03125, 0.03125, 0.0625, 0.03125}, -- NodeBox2
+		}
+	},
+	groups = {fleshy=1, oddly_breakable_by_hand=1, dig_immediate=3},
 })
 
 --other stuff
