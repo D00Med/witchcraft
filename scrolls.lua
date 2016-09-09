@@ -266,6 +266,7 @@ minetest.register_entity("witchcraft:fireball", {
 		end
 
 		local apos = self.object:getpos()
+		local vec = self.object:getvelocity()
 		local part = minetest.add_particlespawner(
 			6, --amount
 			0.3, --time
@@ -274,7 +275,7 @@ minetest.register_entity("witchcraft:fireball", {
 			{x=-0, y=-0, z=-0}, --minvel
 			{x=0, y=0, z=0}, --maxvel
 			{x=0,y=-0.5,z=0}, --minacc
-			{x=0.5,y=0.5,z=0.5}, --maxacc
+			{x=-vec.x,y=-vec.y,z=-vec.z}, --maxacc
 			0.1, --minexptime
 			0.3, --maxexptime
 			1, --minsize
