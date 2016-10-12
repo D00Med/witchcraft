@@ -63,3 +63,18 @@ Potion ingredients(may be slightly inaccurate):
 >bucket of water
 >bullrush
 >bones
+
+About the recipes:
+
+init.lua contains the pot recipes. For each pot there is a line similar to the one below, in the 'witchraft.pot' table.
+
+{"blue", "brown", "default:dirt", "blue2", "moreplants:bullrush", "red", "purple"},
+{"potion name", "result1", "ingredient1", "result2", "ingredient2", "combine potion", "combine result"}
+
+The first column of the table("blue"), is the color of the current potion pot. In the example, it is the blue pot, so the ingredients and results in the other columns
+will apply to the blue pot, ie: the blue pot must be rightclicked. It is important that the name of the pot is in the name of it's texture, eg: a blue pot has the texture "witchraft_pot_blue.png"
+
+The second and fourth columns are the two possible results after adding new ingredients. The last column is the result after combining the current potion with another.
+
+The third and fifth columns are the ingredients required. The ingredient req. to make the potion in column 2 must be in column 3, and the ingredient req. to make the potion in columns 4 must be in columns 5.
+The 6th column is the potion that can be combined with the current potion to make a new potion.
