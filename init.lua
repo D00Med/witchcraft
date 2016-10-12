@@ -559,7 +559,7 @@ witchcraft.pot = {
 	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
 	{"brown", "gred", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
 	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "default:steelblock", "green", "yllwgrn"},
-	{"yellow", "yllwgrn", "tnt:tnt", "", "", "darkpurple", "redbrown"},
+	{"yellow", "yllwgrn", "tnt:tnt", "yllwgrn", "default:coal_lump", "darkpurple", "redbrown"},
 	{"yllwgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
 	{"green2", "darkpurple", "default:glass", "red", "witchcraft:herb", "blue2", "aqua"},
 	{"green", "green2", "default:apple", "ggreen", "default:mese_crystal", "orange", "yllwgrn"},
@@ -1865,6 +1865,7 @@ minetest.register_node("witchcraft:potion_darkpurple", {
 	description = "Shady Potion",
 	drawtype = "plantlike",
 	tiles = {"witchcraft_potion_darkpurple.png"},
+	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
 	selection_box = {
@@ -1958,6 +1959,7 @@ minetest.register_node("witchcraft:potion_darkpurple_2", {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
 	},
+	paramtype = "light",
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
 	stack_max = 1,
@@ -2089,9 +2091,10 @@ minetest.register_node("witchcraft:potion_yllwgrn", {
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
 	sounds = default.node_sound_glass_defaults(),
 	inventory_image = "witchcraft_potion_yellgrn.png",
-	on_use = function(pos, placer)
+	on_use = function(pos, placer, itemstack)
 	local pos = placer:getpos();
 	tnt.boom(pos, {damage_radius=5,radius=3,ignore_protection=false})
+	return itemstack
 	end,
 })
 
@@ -2111,9 +2114,10 @@ minetest.register_node("witchcraft:potion_yllwgrn_2", {
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
 	inventory_image = "witchcraft_potion_yellgrn.png^[colorize:black:50",
-	on_use = function(pos, placer)
+	on_use = function(pos, placer, itemstack)
 	local pos = placer:getpos();
 	tnt.boom(pos, {damage_radius=10,radius=4,ignore_protection=false})
+	return itemstack
 	end,
 })
 
