@@ -27,7 +27,7 @@ minetest.override_item("vessels:glass_bottle", {
 	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
-	stack_max = 1,
+	stack_max = 3,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
@@ -613,7 +613,12 @@ minetest.register_node("witchcraft:pot_"..color, {
 	},
 	on_rightclick = function(pos, node, clicker, item, _)
 		local wield_item = clicker:get_wielded_item():get_name()
-		if wield_item == "vessels:glass_bottle" then
+		if wield_item == "vessels:glass_bottle" and clicker:get_wielded_item():get_count() == 3 then
+			item:replace("witchcraft:potion_"..color)
+			minetest.env:add_item({x=pos.x, y=pos.y+1.5, z=pos.z}, "witchcraft:potion_"..color)
+			minetest.env:add_item({x=pos.x, y=pos.y+1.5, z=pos.z}, "witchcraft:potion_"..color)
+			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
+		elseif wield_item == "vessels:glass_bottle" and clicker:get_wielded_item():get_count() ~= 3 then
 			item:replace("witchcraft:potion_"..color)
 			minetest.set_node(pos, {name="witchcraft:pot", param2=node.param2})
 		else
@@ -932,6 +937,9 @@ minetest.register_entity("witchcraft:tnt_splash", {
 						tnt.boom(n, {damage_radius=5,radius=3,ignore_protection=false})
 					end
 					if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <=5 then
+								if not ignore_protection and minetest.is_protected(npos, "") then
+								return
+								end
 										minetest.env:set_node(t, {name="fire:basic_flame"})
 					end
 				end
@@ -973,6 +981,9 @@ minetest.register_entity("witchcraft:fire_splash", {
 								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
 								local n = minetest.env:get_node(p).name
 								if n ~= "witchcraft:fire_splash" and n ~= "air" then
+								if not ignore_protection and minetest.is_protected(npos, "") then
+								return
+								end
 										minetest.env:set_node(t, {name="fire:basic_flame"})
 									minetest.sound_play("default_break_glass.1", {
 									pos = self.object:getpos(),
