@@ -527,10 +527,22 @@ minetest.register_node("witchcraft:pot", {
 			{-0.4375, -0.5, -0.4375, 0.4375, -0.4375, 0.4375}, -- NodeBox1
 			{-0.375, -0.4375, -0.375, 0.375, -0.375, 0.375}, -- NodeBox2
 			{-0.3125, -0.375, -0.3125, 0.3125, -0.3125, 0.3125}, -- NodeBox3
-			{-0.375, -0.3125, -0.375, 0.375, 0.5, 0.375}, -- NodeBox4
-			{-0.4375, -0.25, -0.4375, 0.4375, 0.3125, 0.4375}, -- NodeBox5
-			{-0.5, -0.1875, -0.5, 0.5, 0.3125, 0.5}, -- NodeBox6
-			{-0.4375, 0.375, -0.4375, 0.4375, 0.5, 0.4375}, -- NodeBox7
+			{-0.375, -0.3125, -0.375, 0.375, -0.25, 0.375}, -- NodeBox4
+			{-0.4375, -0.25, -0.4375, 0.4375, -0.1875, 0.4375}, -- NodeBox5
+			{-0.5, -0.1875, -0.5, 0.5, -0.125, 0.5}, -- NodeBox7
+			{-0.5, -0.125, -0.5, 0.5, 0.3125, -0.3125}, -- NodeBox8
+			{-0.5, -0.125, 0.3125, 0.5, 0.3125, 0.5}, -- NodeBox9
+			{0.3125, -0.1875, -0.5, 0.5, 0.3125, 0.5}, -- NodeBox10
+			{-0.5, -0.125, -0.5, -0.3125, 0.3125, 0.5}, -- NodeBox11
+			{-0.4375, 0.375, 0.3125, 0.4375, 0.5, 0.4375}, -- NodeBox12
+			{-0.4375, 0.375, -0.4375, 0.4375, 0.5, -0.3125}, -- NodeBox13
+			{-0.4375, 0.375, -0.4375, 0.4375, 0.5, -0.3125}, -- NodeBox14
+			{0.3125, 0.375, -0.4375, 0.4375, 0.5, 0.4375}, -- NodeBox15
+			{-0.4375, 0.375, -0.4375, -0.3125, 0.5, 0.4375}, -- NodeBox16
+			{-0.375, 0.3125, -0.375, 0.375, 0.375, -0.3125}, -- NodeBox17
+			{-0.375, 0.3125, 0.3125, 0.375, 0.375, 0.375}, -- NodeBox18
+			{0.3125, 0.3125, -0.375, 0.375, 0.375, 0.375}, -- NodeBox19
+			{-0.375, 0.3125, -0.375, -0.3125, 0.375, 0.375}, -- NodeBox20
 		}
 	},
 	on_rightclick = function(pos, node, clicker, item, _)
@@ -549,6 +561,7 @@ minetest.register_node("witchcraft:pot", {
 --level 1 potions from cooking pot
 
 local witchcraft = {}
+--the old recipes
 witchcraft.pot = {
 	{"blue", "brown", "default:dirt", "blue2", "moreplants:bullrush", "red", "purple"},
 	{"blue2", "yellow", "default:steelblock", "yellow", "default:copperblock", "green2", "aqua"},
@@ -559,6 +572,7 @@ witchcraft.pot = {
 	{"redbrown", "magenta", "flowers:mushroom_brown", "magenta", "default:stone", "grey", "brown"},
 	{"brown", "gred", "witchcraft:herb", "grey", "moreplants:bush", "red", "redbrown"},
 	{"orange", "redbrown", "witchcraft:bottle_slime", "yellow", "default:steelblock", "green", "yllwgrn"},
+	{"gold", "yllwgrn", "tnt:tnt", "", "", "green", "yllwgrn"},
 	{"yellow", "yllwgrn", "tnt:tnt", "yllwgrn", "default:coal_lump", "darkpurple", "redbrown"},
 	{"yllwgrn", "green", "default:gold_lump", "orange", "mobs:lava_orb", "grey", "magenta"},
 	{"green2", "darkpurple", "default:glass", "red", "witchcraft:herb", "blue2", "aqua"},
@@ -571,10 +585,35 @@ witchcraft.pot = {
 	{"gred", "red", "default:apple", "grey", "default:gravel", "", ""},
 	{"gcyan", "", "", "", "", "", ""},
 }
+--new recipes
+witchcraft.pot_new = {
+	{"blue", "blue2", "flowers:waterlily", "blue2", "moreplants:bullrush", "red", "purple"},
+	{"blue2", "brown", "default:dirt", "yellow", "default:copperblock", "green2", "aqua"},
+	{"brown", "redbrown", "flowers:mushroom_red", "green", "moreplants:weed", "yellow", "redbrown"},
+	{"redbrown", "gred", "default:apple", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
+	{"gred", "red", "witchcraft:herbs", "darkpurple", "moreplants:mushroom", "purple", "darkpurple"},
+	{"red", "gold", "default:mese_crystal_fragment", "yllwgrn", "default:flint", "blue", "purple"},
+	{"gold", "magenta", "witchcraft:tooth", "", "", "green", "yllwgrn"},
+	{"magenta", "gpurple", "witchcraft:bottle_slime", "magenta", "default:stone", "grey", "brown"},
+	{"gpurple", "purple", "witchcraft:bone_bottle", "grey", "moreplants:bush", "red", "redbrown"},
+	{"purple", "green", "default:papyrus", "yellow", "default:steelblock", "green", "yllwgrn"},
+	{"green", "green2", "default:sapling", "yllwgrn", "default:coal_lump", "darkpurple", "redbrown"},
+	{"green2", "ggreen", "flowers:mushroom_brown", "orange", "mobs:lava_orb", "grey", "magenta"},
+	{"ggreen", "cyan", "witchcraft:slime_bottle", "red", "witchcraft:herb", "blue2", "aqua"},
+	{"cyan", "gcyan", "witchcraft:bottle_medicine", "ggreen", "default:mese_crystal", "orange", "yllwgrn"},
+	{"gcyan", "darkpurple", "default:glass", "", "", "blue", "cyan"},
+	{"darkpurple", "orange", "default:torch", "gcyan", "default:mese_crystal", "green", "yellow"},
+	{"orange", "grey", "witchcraft:bone", "brown", "default:apple", "yllwgrn", "magenta"},
+	{"grey", "yllwgrn", "tnt:gunpowder", "", "", "", ""},
+	{"yllwgrn", "yellow", "default:steel_ingot", "", "", "", ""},
+	{"yellow", "aqua", "default:diamond", "grey", "default:gravel", "", ""},
+	{"aqua", "", "", "", "", "", ""},
+}
+
 
 --potion pots
 
-for _, row in ipairs(witchcraft.pot) do
+for _, row in ipairs(witchcraft.pot_new) do --change 'pot_new' to 'pot' for the old recipes
 local color = row[1]
 local newcolor = row[2]
 local newcolor2 = row[4]
@@ -643,7 +682,7 @@ end
 
 --pot effects
 minetest.register_abm({
-	nodenames = {"witchcraft:pot_water", "witchcraft:pot_redbrown", "witchcraft:pot_blue2", "witchcraft:pot_cyan", "witchcraft:pot_green", "witchcraft:pot_green2", "witchcraft:pot_aqua", "witchcraft:pot_yellow", "witchcraft:pot_yllwgrn", "witchcraft:pot_red", "witchcraft:pot_magenta", "witchcraft:pot_brown"},
+	nodenames = {"witchcraft:pot_water", "witchcraft:pot_gold", "witchcraft:pot_redbrown", "witchcraft:pot_blue2", "witchcraft:pot_cyan", "witchcraft:pot_green", "witchcraft:pot_green2", "witchcraft:pot_aqua", "witchcraft:pot_yellow", "witchcraft:pot_yllwgrn", "witchcraft:pot_red", "witchcraft:pot_magenta", "witchcraft:pot_brown"},
 	interval = 0.5,
 	chance = 1,
 	action = function(pos, node)
@@ -3189,6 +3228,13 @@ minetest.register_node("witchcraft:potion_ggreen", {
 			false, --collisiondetection
 			"witchcraft_pot_bottom.png^[colorize:black:200" --texture
 		)
+	local mtime = minetest.get_timeofday()
+	if mtime >= 0.25 and mtime <= 0.75 then
+	user:override_day_night_ratio(-mtime+0.5)
+	minetest.after(10, function()
+	user:override_day_night_ratio(nil)
+	end)
+	end
 		item:replace("vessels:glass_bottle")
 	return item
 	end
@@ -3407,6 +3453,101 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 	end
 	end
 })
+
+--light potion
+
+function lightchange(person, duration)
+	local mtime = minetest.get_timeofday()
+	if mtime <= 0.25 or mtime >= 0.75 then
+	person:override_day_night_ratio(mtime+0.5)
+	minetest.after(duration, function()
+	person:override_day_night_ratio(nil)
+	end)
+	end
+end
+
+minetest.register_node("witchcraft:potion_gold", {
+	description = "Shiny Potion",
+	drawtype = "plantlike",
+	stack_max = 1,
+	tiles = {"witchcraft_potion_gold.png"},
+	wield_image = "witchcraft_potion_gold.png",
+	paramtype = "light",
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_gold.png",
+	on_use = function(item, user, pointed_thing)
+		local player = user:get_player_name()
+		lightchange(user, 5)
+		local playerpos = user:getpos();
+			minetest.add_particlespawner(
+			5, --amount
+			0.1, --time
+			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.5,y=4,z=-0.5}, --minacc
+			{x=0.5,y=4,z=0.5}, --maxacc
+			0.5, --minexptime
+			1, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_effect.png" --texture
+		)
+		item:replace("vessels:glass_bottle")
+	return item
+	end
+})
+
+minetest.register_node("witchcraft:potion_gold_2", {
+	description = "Shiny Potion (lv2)",
+	drawtype = "plantlike",
+	stack_max = 1,
+	tiles = {"witchcraft_potion_gold.png^[colorize:black:50"},
+	wield_image = "witchcraft_potion_gold.png^[colorize:black:50",
+	paramtype = "light",
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_gold.png^[colorize:black:50",
+	on_use = function(item, user, pointed_thing)
+		local player = user:get_player_name()
+		lightchange(player, 10)
+		local playerpos = user:getpos();
+			minetest.add_particlespawner(
+			5, --amount
+			0.1, --time
+			{x=playerpos.x-1, y=playerpos.y+1, z=playerpos.z-1}, --minpos
+			{x=playerpos.x+1, y=playerpos.y+1, z=playerpos.z+1}, --maxpos
+			{x=-0, y=-0, z=-0}, --minvel
+			{x=0, y=0, z=0}, --maxvel
+			{x=-0.5,y=4,z=-0.5}, --minacc
+			{x=0.5,y=4,z=0.5}, --maxacc
+			0.5, --minexptime
+			1, --maxexptime
+			1, --minsize
+			2, --maxsize
+			false, --collisiondetection
+			"witchcraft_effect.png" --texture
+		)
+		item:replace("vessels:glass_bottle")
+	return item
+	end
+})
+
 
 --invisibility potion by Tenplus1(DWTFYWT V2), see darkpurple potion for on_use effect
 
