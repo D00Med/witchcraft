@@ -3484,7 +3484,7 @@ minetest.register_node("witchcraft:potion_gold", {
 	inventory_image = "witchcraft_potion_gold.png",
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
-		lightchange(user, 5)
+		lightchange(user, 10)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3524,7 +3524,7 @@ minetest.register_node("witchcraft:potion_gold_2", {
 	sounds = default.node_sound_glass_defaults(),
 	inventory_image = "witchcraft_potion_gold.png^[colorize:black:50",
 	on_use = function(item, user, pointed_thing)
-		lightchange(user, 10)
+		lightchange(user, 20)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
