@@ -586,28 +586,30 @@ witchcraft.pot = {
 	{"gcyan", "", "", "", "", "", ""},
 }
 --new recipes
+
 witchcraft.pot_new = {
-	{"blue", "blue2", "flowers:waterlily", "blue2", "moreplants:bullrush", "red", "purple"},
-	{"blue2", "brown", "default:dirt", "yellow", "default:copperblock", "green2", "aqua"},
-	{"brown", "redbrown", "flowers:mushroom_red", "green", "moreplants:weed", "yellow", "redbrown"},
-	{"redbrown", "gred", "default:apple", "gpurple", "default:mese_crystal", "magenta", "darkpurple"},
-	{"gred", "red", "witchcraft:herbs", "darkpurple", "moreplants:mushroom", "purple", "darkpurple"},
-	{"red", "gold", "default:mese_crystal_fragment", "yllwgrn", "default:flint", "blue", "purple"},
-	{"gold", "magenta", "witchcraft:tooth", "", "", "green", "yllwgrn"},
-	{"magenta", "gpurple", "witchcraft:bottle_slime", "magenta", "default:stone", "grey", "brown"},
-	{"gpurple", "purple", "witchcraft:bone_bottle", "grey", "moreplants:bush", "red", "redbrown"},
-	{"purple", "green", "default:papyrus", "yellow", "default:steelblock", "green", "yllwgrn"},
-	{"green", "green2", "default:sapling", "yllwgrn", "default:coal_lump", "darkpurple", "redbrown"},
-	{"green2", "ggreen", "flowers:mushroom_brown", "orange", "mobs:lava_orb", "grey", "magenta"},
-	{"ggreen", "cyan", "witchcraft:slime_bottle", "red", "witchcraft:herb", "blue2", "aqua"},
-	{"cyan", "gcyan", "witchcraft:bottle_medicine", "ggreen", "default:mese_crystal", "orange", "yllwgrn"},
-	{"gcyan", "darkpurple", "default:glass", "", "", "blue", "cyan"},
-	{"darkpurple", "orange", "default:torch", "gcyan", "default:mese_crystal", "green", "yellow"},
-	{"orange", "grey", "witchcraft:bone", "brown", "default:apple", "yllwgrn", "magenta"},
-	{"grey", "yllwgrn", "tnt:gunpowder", "", "", "", ""},
-	{"yllwgrn", "yellow", "default:steel_ingot", "", "", "", ""},
-	{"yellow", "aqua", "default:diamond", "grey", "default:gravel", "", ""},
+	{"blue", "blue2", "flowers:waterlily", "brown", "default:dirt", "", ""},
+	{"blue2", "green", "default:papyrus", "", "", "", ""},
+	{"green", "green2", "default:sapling", "", "", "", ""},
+	{"green2", "yellow", "default:mese_crystal_fragment", "", "", "", ""},
+	{"yellow", "ggreen", "flowers:mushroom_brown", "", "", "", ""},
+	{"ggreen", "cyan", "witchcraft:slime_bottle", "", "", "", ""},
+	{"cyan", "gcyan", "witchcraft:bottle_medicine", "", "", "", ""},
+	{"gcyan", "orange", "default:torch", "", "", "", ""},
+	{"orange", "yllwgrn", "tnt:gunpowder", "", "", "", ""},
+	{"yllwgrn", "gold", "default:steel_ingot", "", "", "", ""},
+	{"gold", "aqua", "default:diamond", "", "", "", ""},
 	{"aqua", "", "", "", "", "", ""},
+	{"brown", "redbrown", "flowers:mushroom_red", "", "", "", ""},
+	{"redbrown", "gred", "default:apple", "", "", "", ""},
+	{"gred", "red", "witchcraft:herbs", "", "", "", ""},
+	{"red", "magenta", "witchcraft:tooth", "", "", "", ""},
+	{"magenta", "gpurple", "witchcraft:bottle_slime", "", "", "", ""},
+	{"gpurple", "purple", "witchcraft:bone_bottle", "", "", "", ""},
+	{"purple", "darkpurple", "default:glass", "", "", "", ""},
+	{"darkpurple", "silver", "default:steel_ingot", "", "", "", ""},
+	{"silver", "grey", "witchcraft:bone", "", "", "", ""},
+	{"grey", "aqua", "default:diamond", "", "", "", ""},
 }
 
 
@@ -1535,6 +1537,27 @@ playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"},
 		player:set_physics_override(1,nil,1)
 	end,
 	false
+)
+
+playereffects.register_effect_type("potion_silver", "Fire resist", nil, {"fire_resist"}, 
+	function(player)
+		local pos = player:getpos()
+		local node = minetest.get_node(pos).name
+		if node == "default:lava_source" or node == "default:lava_flowing" or node == "fire:basic_flame" then
+		local hp1 = player:get_hp()
+		minetest.after(0.8, function()
+		local hp2 = player:get_hp()
+		local change = hp1-hp2
+		if change >= 0 then
+		player:set_hp(hp2+change)
+		end
+		end)
+		end
+	end,
+	nil,
+	nil,
+	nil,
+	0.3
 )
 
 
@@ -2651,6 +2674,53 @@ minetest.register_node("witchcraft:potion_blue", {
 	end
 })
 
+
+minetest.register_node("witchcraft:potion_silver", {
+	description = "Cold potion",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_silver.png"},
+	wield_image = "witchcraft_potion_silver.png",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_silver.png",
+	on_use = function(item, user, pointed_thing)
+		 playereffects.apply_effect_type("potion_silver", 15, user)
+		item:replace("vessels:glass_bottle")
+		return item
+	end
+})
+
+minetest.register_node("witchcraft:potion_silver_2", {
+	description = "Cold potion lv2",
+	drawtype = "plantlike",
+	tiles = {"witchcraft_potion_silver.png^[colorize:black:50"},
+	wield_image = "witchcraft_potion_silver.png^[colorize:black:50",
+	paramtype = "light",
+	stack_max = 1,
+	is_ground_content = false,
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+	},
+	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+	sounds = default.node_sound_glass_defaults(),
+	inventory_image = "witchcraft_potion_silver.png^[colorize:black:50",
+	on_use = function(item, user, pointed_thing)
+		 playereffects.apply_effect_type("potion_silver", 60, user)
+		item:replace("vessels:glass_bottle")
+		return item
+	end
+})
+
 if minetest.get_modpath("farming_redo") then
 minetest.register_node("witchcraft:potion_green", {
 	description = "Melon Potion",
@@ -2749,11 +2819,11 @@ minetest.register_node("witchcraft:potion_green", {
 })
 end
 
-minetest.register_node("witchcraft:potion_yellow", {
+minetest.register_node("witchcraft:potion_gold", {
 	description = "Alchemy Potion",
 	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_yellow.png"},
-	wield_image = "witchcraft_potion_yellow.png",
+	tiles = {"witchcraft_potion_gold.png"},
+	wield_image = "witchcraft_potion_gold.png",
 	paramtype = "light",
 	stack_max = 1,
 	is_ground_content = false,
@@ -2764,7 +2834,7 @@ minetest.register_node("witchcraft:potion_yellow", {
 	},
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
 	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_yellow.png",
+	inventory_image = "witchcraft_potion_gold.png",
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		if pointed_thing.type == "node" and
@@ -2797,11 +2867,11 @@ minetest.register_node("witchcraft:potion_yellow", {
 	end
 })
 
-minetest.register_node("witchcraft:potion_yellow_2", {
+minetest.register_node("witchcraft:potion_gold_2", {
 	description = "Alchemy Potion (lv2)",
 	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_yellow.png^[colorize:black:50"},
-	wield_image = "witchcraft_potion_yellow.png^[colorize:black:50",
+	tiles = {"witchcraft_potion_gold.png^[colorize:black:50"},
+	wield_image = "witchcraft_potion_gold.png^[colorize:black:50",
 	paramtype = "light",
 	stack_max = 1,
 	is_ground_content = false,
@@ -2812,7 +2882,7 @@ minetest.register_node("witchcraft:potion_yellow_2", {
 	},
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_yellow.png^[colorize:black:50",
+	inventory_image = "witchcraft_potion_gold.png^[colorize:black:50",
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		if pointed_thing.type == "node" and
@@ -3466,12 +3536,12 @@ function lightchange(person, duration)
 	end
 end
 
-minetest.register_node("witchcraft:potion_gold", {
+minetest.register_node("witchcraft:potion_yellow", {
 	description = "Shiny Potion",
 	drawtype = "plantlike",
 	stack_max = 1,
-	tiles = {"witchcraft_potion_gold.png"},
-	wield_image = "witchcraft_potion_gold.png",
+	tiles = {"witchcraft_potion_yellow.png"},
+	wield_image = "witchcraft_potion_yellow.png",
 	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
@@ -3481,7 +3551,7 @@ minetest.register_node("witchcraft:potion_gold", {
 	},
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_gold.png",
+	inventory_image = "witchcraft_potion_yellow.png",
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		lightchange(user, 10)
@@ -3507,12 +3577,12 @@ minetest.register_node("witchcraft:potion_gold", {
 	end
 })
 
-minetest.register_node("witchcraft:potion_gold_2", {
+minetest.register_node("witchcraft:potion_yellow_2", {
 	description = "Shiny Potion (lv2)",
 	drawtype = "plantlike",
 	stack_max = 1,
-	tiles = {"witchcraft_potion_gold.png^[colorize:black:50"},
-	wield_image = "witchcraft_potion_gold.png^[colorize:black:50",
+	tiles = {"witchcraft_potion_yellow.png^[colorize:black:50"},
+	wield_image = "witchcraft_potion_yellow.png^[colorize:black:50",
 	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
@@ -3522,7 +3592,7 @@ minetest.register_node("witchcraft:potion_gold_2", {
 	},
 	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
 	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_gold.png^[colorize:black:50",
+	inventory_image = "witchcraft_potion_yellow.png^[colorize:black:50",
 	on_use = function(item, user, pointed_thing)
 		lightchange(user, 20)
 		local playerpos = user:getpos();
