@@ -19,21 +19,7 @@
 
 --changes so that bottles can't stack
 minetest.override_item("vessels:glass_bottle", {
-	description = "Small Bottle (empty)",
-	drawtype = "plantlike",
-	tiles = {"vessels_glass_bottle.png"},
-	inventory_image = "vessels_glass_bottle_inv.png",
-	wield_image = "vessels_glass_bottle.png",
-	paramtype = "light",
-	is_ground_content = false,
-	walkable = false,
 	stack_max = 3,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1},
-	sounds = default.node_sound_glass_defaults(),
 })
 
 local vessels_shelf_formspec =
