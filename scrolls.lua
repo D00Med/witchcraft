@@ -44,10 +44,14 @@ minetest.register_craftitem("witchcraft:scroll_fireball", {
 	on_use = function(item, placer, pos)
 	local dir = placer:get_look_dir();
 	local playerpos = placer:getpos();
-	local vec = {x=dir.x*7,y=dir.y*7,z=dir.z*7}
 	local obj = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+1.5+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:fireball")
-	obj:setvelocity(vec)
-	
+	local obj2 = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+1.5+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:fireball")
+	local obj3 = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+1.5+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:fireball")
+	local obj4 = minetest.env:add_entity({x=playerpos.x+dir.x*1.5,y=playerpos.y+1.5+dir.y,z=playerpos.z+0+dir.z}, "witchcraft:fireball")
+	obj2:setvelocity({x=dir.x*7+0.5,y=dir.y*7,z=dir.z*7+0.5})
+	obj3:setvelocity({x=dir.x*7-0.5,y=dir.y*7,z=dir.z*7-0.5})
+	obj4:setvelocity({x=dir.x*7,y=dir.y*7-0.5,z=dir.z*7})
+	obj:setvelocity({x=dir.x*7,y=dir.y*7+0.5,z=dir.z*7})
 		item:take_item()
 		return item
 	end,
@@ -365,7 +369,7 @@ minetest.register_entity("witchcraft:ice", {
 	damage = 2,
 	collisionbox = {0, 0, 0, 0, 0, 0},
 	on_step = function(self, obj, pos)		
-		local remove = minetest.after(2, function() 
+		local remove = minetest.after(10, function() 
 		self.object:remove()
 		end)
 		local pos = self.object:getpos()
@@ -380,6 +384,25 @@ minetest.register_entity("witchcraft:ice", {
 					self.object:remove()
 				end
 				end
+			for dx=0,1 do
+						for dy=0,1 do
+							for dz=0,1 do
+								local p = {x=pos.x+dx, y=pos.y, z=pos.z+dz}
+								local t = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+								local n = minetest.env:get_node(p).name
+								if n == "default:water_source" or n =="default:river_water_source" then	
+								local pos = self.object:getpos()
+								minetest.set_node(pos, {name="default:ice"})
+								self.object:remove()
+								elseif n ~= "air" then
+									local velo = self.object:getvelocity()
+									self.object:setvelocity({x=velo.x*-1, y=velo.y*0, z=velo.z*1})
+									--self.object:remove()
+									return
+								end
+							end
+						end
+					end
 
 		local apos = self.object:getpos()
 		local part = minetest.add_particlespawner(
