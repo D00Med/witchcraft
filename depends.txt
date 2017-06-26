@@ -3,6 +3,7 @@ vessels
 tnt
 fire
 playereffects
+player_monoids?
 farming?
 lightning?
 pmobs?

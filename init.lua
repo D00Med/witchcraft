@@ -1437,7 +1437,97 @@ minetest.register_entity("witchcraft:smoke_splash", {
 
 --player effects
 
-playereffects.register_effect_type("potion_speed_lv1", "High speed", nil, {"speed"}, 
+if minetest.get_modpath("player_monoids") then
+local speed = player_monoids.speed
+local jump = player_monoids.jump
+local gravity = player_monoids.gravity
+
+playereffects.register_effect_type("witchcraft:potion_speed_lv1", "High Speed", nil, {"witchcraft:potion_speed_lv1"},
+	function(player)
+	speed:add_change(player, 2, "witchcraft:potion_speed_lv1")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_speed_lv1")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_speed_lv2", "High Speed", nil, {"witchcraft:potion_speed_lv2"},
+	function(player)
+	speed:add_change(player, 2.5, "witchcraft:potion_speed_lv2")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_speed_lv2")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_jump_lvx", "High Jump", nil, {"witchcraft:potion_jump_lvx"},
+	function(player)
+	jump:add_change(player, 1.5, "witchcraft:potion_jump_lvx")
+	gravity:add_change(player, 0.8, "witchcraft:potion_jump_lvx")
+	end, 
+	function(effect, player)
+	jump:del_change(player, "witchcraft:potion_jump_lvx")
+	gravity:del_change(player, "witchcraft:potion_jump_lvx")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_antigrav_lvx", "Light weight", nil, {"witchcraft:potion_antigrav_lvx"},
+	function(player)
+	gravity:add_change(player, 0.1, "witchcraft:potion_antigrav_lvx")
+	end, 
+	function(effect, player)
+	gravity:del_change(player, "witchcraft:potion_antigrav_lvx")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_slow_lv1", "Low Speed", nil, {"witchcraft:potion_slow_lv1"},
+	function(player)
+	speed:add_change(player, 0.5, "witchcraft:potion_slow_lv1")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_slow_lv1")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_slow_lv2", "Low Speed", nil, {"witchcraft:potion_slow_lv2"},
+	function(player)
+	speed:add_change(player, 0.4, "witchcraft:potion_slow_lv2")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_slow_lv2")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_swim_lv1", "Fast Swim", nil, {"witchcraft:potion_swim_lv1"},
+	function(player)
+	speed:add_change(player, 3, "witchcraft:potion_swim_lv1")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_swim_lv1")
+	end,
+	false
+)
+
+playereffects.register_effect_type("witchcraft:potion_swim_lv2", "Dive", nil, {"witchcraft:potion_swim_lv2"},
+	function(player)
+	speed:add_change(player, 3, "witchcraft:potion_swim_lv2")
+	gravity:add_change(player, 4, "witchcraft:potion_swim_lv2")
+	end, 
+	function(effect, player)
+	speed:del_change(player, "witchcraft:potion_swim_lv2")
+	gravity:del_change(player, "witchcraft:potion_swim_lv2")
+	end,
+	false
+)
+else
+
+playereffects.register_effect_type("witchcraft:potion_speed_lv1", "High speed", nil, {"speed"}, 
 	function(player)
 		player:set_physics_override(2,nil,nil)
 	end,
@@ -1448,7 +1538,7 @@ playereffects.register_effect_type("potion_speed_lv1", "High speed", nil, {"spee
 	false
 )
 
-playereffects.register_effect_type("potion_speed_lv2", "High speed", nil, {"speed"}, 
+playereffects.register_effect_type("witchcraft:potion_speed_lv2", "High speed", nil, {"speed"}, 
 	function(player)
 		player:set_physics_override(2.5,nil,nil)
 	end,
@@ -1459,7 +1549,7 @@ playereffects.register_effect_type("potion_speed_lv2", "High speed", nil, {"spee
 	false
 )
 
-playereffects.register_effect_type("potion_jump_lvx", "High Jump", nil, {"jump"}, 
+playereffects.register_effect_type("witchcraft:potion_jump_lvx", "High Jump", nil, {"jump"}, 
 	function(player)
 		player:set_physics_override(nil,1.5,0.8)
 	end,
@@ -1470,7 +1560,7 @@ playereffects.register_effect_type("potion_jump_lvx", "High Jump", nil, {"jump"}
 	false
 )
 
-playereffects.register_effect_type("potion_antigrav_lvx", "Light weight", nil, {"gravity"}, 
+playereffects.register_effect_type("witchcraft:potion_antigrav_lvx", "Light weight", nil, {"gravity"}, 
 	function(player)
 		player:set_physics_override(nil,nil,0.1)
 	end,
@@ -1481,7 +1571,7 @@ playereffects.register_effect_type("potion_antigrav_lvx", "Light weight", nil, {
 	false
 )
 
-playereffects.register_effect_type("potion_slow_lv1", "Low speed", nil, {"speed"}, 
+playereffects.register_effect_type("witchcraft:potion_slow_lv1", "Low speed", nil, {"speed"}, 
 	function(player)
 		player:set_physics_override(0.5,nil,nil)
 	end,
@@ -1492,7 +1582,7 @@ playereffects.register_effect_type("potion_slow_lv1", "Low speed", nil, {"speed"
 	false
 )
 
-playereffects.register_effect_type("potion_slow_lv2", "Low speed", nil, {"speed"}, 
+playereffects.register_effect_type("witchcraft:potion_slow_lv2", "Low speed", nil, {"speed"}, 
 	function(player)
 		player:set_physics_override(0.4,nil,nil)
 	end,
@@ -1503,7 +1593,7 @@ playereffects.register_effect_type("potion_slow_lv2", "Low speed", nil, {"speed"
 	false
 )
 
-playereffects.register_effect_type("potion_swim_lv1", "Fast Swim", nil, {"swim"}, 
+playereffects.register_effect_type("witchcraft:potion_swim_lv1", "Fast Swim", nil, {"swim"}, 
 	function(player)
 		player:set_physics_override(3,nil,nil)
 	end,
@@ -1514,7 +1604,7 @@ playereffects.register_effect_type("potion_swim_lv1", "Fast Swim", nil, {"swim"}
 	false
 )
 
-playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"}, 
+playereffects.register_effect_type("witchcraft:potion_swim_lv2", "Dive", nil, {"swim"}, 
 	function(player)
 		player:set_physics_override(3,nil,4)
 	end,
@@ -1524,6 +1614,7 @@ playereffects.register_effect_type("potion_swim_lv2", "Dive", nil, {"swim"},
 	end,
 	false
 )
+end
 
 playereffects.register_effect_type("potion_silver", "Fire resist", nil, {"fire_resist"}, 
 	function(player)
@@ -3015,7 +3106,7 @@ minetest.register_node("witchcraft:potion_magenta", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_speed_lv1", 10, user)
+		    playereffects.apply_effect_type("witchcraft:potion_speed_lv1", 10, user)
 
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3058,7 +3149,7 @@ minetest.register_node("witchcraft:potion_magenta_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_speed_lv2", 10, user)
+		    playereffects.apply_effect_type("witchcraft:potion_speed_lv2", 10, user)
 
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
@@ -3101,7 +3192,7 @@ minetest.register_node("witchcraft:potion_cyan", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_antigrav_lvx", 10, user)
+		    playereffects.apply_effect_type("witchcraft:potion_antigrav_lvx", 10, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3184,7 +3275,7 @@ minetest.register_node("witchcraft:potion_cyan_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_antigrav_lvx", 20, user)
+		    playereffects.apply_effect_type("witchcraft:potion_antigrav_lvx", 20, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3226,7 +3317,7 @@ minetest.register_node("witchcraft:potion_green2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_jump_lvx", 6, user)
+		    playereffects.apply_effect_type("witchcraft:potion_jump_lvx", 6, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3315,7 +3406,7 @@ minetest.register_node("witchcraft:potion_green2_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_jump_lvx", 10, user)
+		    playereffects.apply_effect_type("witchcraft:potion_jump_lvx", 10, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3357,7 +3448,7 @@ minetest.register_node("witchcraft:potion_redbrown", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_slow_lv1", 11, user)
+		    playereffects.apply_effect_type("witchcraft:potion_slow_lv1", 11, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3399,7 +3490,7 @@ minetest.register_node("witchcraft:potion_redbrown_2", {
 	on_use = function(item, user, pointed_thing)
 		local player = user:get_player_name()
 		local breath_change = user:set_breath(5)
-		    playereffects.apply_effect_type("potion_slow_lv2", 15, user)
+		    playereffects.apply_effect_type("witchcraft:potion_slow_lv2", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3442,7 +3533,7 @@ minetest.register_node("witchcraft:potion_blue2", {
 		local player = user:get_player_name()
 		local breath = user:get_breath()
 	if breath <= 10 then
-		    playereffects.apply_effect_type("potion_swim_lv1", 15, user)
+		    playereffects.apply_effect_type("witchcraft:potion_swim_lv1", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
@@ -3486,7 +3577,7 @@ minetest.register_node("witchcraft:potion_blue2_2", {
 		local player = user:get_player_name()
 		local breath = user:get_breath()
 	if breath <= 10 then
-		    playereffects.apply_effect_type("potion_swim_lv2", 15, user)
+		    playereffects.apply_effect_type("witchcraft:potion_swim_lv2", 15, user)
 		local playerpos = user:getpos();
 			minetest.add_particlespawner(
 			5, --amount
