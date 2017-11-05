@@ -3797,7 +3797,7 @@ minetest.register_node("witchcraft:pentagram", {
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	sunlight_propagates = false,	
-	light_source = 50,
+	light_source = 14,
 	walkable = false,
 	is_ground_content = true,
 	selection_box = {
@@ -3840,7 +3840,7 @@ minetest.register_node("witchcraft:portal", {
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	sunlight_propagates = false,	
-	light_source = 50,
+	light_source = 14,
 	walkable = false,
 	is_ground_content = true,
 	selection_box = {
