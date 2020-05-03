@@ -2539,105 +2539,106 @@ minetest.register_node("witchcraft:potion_purple", {
 	end,
 })
 
-
-
 if minetest.get_modpath("hud_hunger") ~= nil then
-local register_food = hunger.register_food
-minetest.register_node("witchcraft:potion_gpurple", {
-	description = "Filling Potion",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_gpurple.png"},
-	wield_image = "witchcraft_potion_gpurple.png",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_gpurple.png",
-	on_use = function(item, placer, pos)
-		item:replace("vessels:glass_bottle")
-		return item
-	end,
-})
-
-minetest.register_node("witchcraft:potion_gred", {
-	description = "Hunger Potion",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_gred.png"},
-	wield_image = "witchcraft_potion_gred.png",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_gred.png",
-	on_use = function(item, placer, pos)
-		item:replace("vessels:glass_bottle")
-		return item
-	end,
-})
-
-register_food("witchcraft:potion_gpurple", 10)
-register_food("witchcraft:potion_gred", -4)
-else
-
+	local register_food = hunger.register_food
 	minetest.register_node("witchcraft:potion_gpurple", {
-	description = "Filling Potion (better with hunger mod)",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_purple.png"},
-	wield_image = "witchcraft_potion_purple.png",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_purple.png",
-	on_use = function(itemstack, player)
-	local health = player:get_hp();
-	player:set_hp(health+20)
-	itemstack:replace("vessels:glass_bottle")
-	return itemstack
-	end,
+		description = "Filling Potion",
+		drawtype = "plantlike",
+		tiles = {"witchcraft_potion_gpurple.png"},
+		wield_image = "witchcraft_potion_gpurple.png",
+		paramtype = "light",
+		stack_max = 1,
+		is_ground_content = false,
+		walkable = false,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+		},
+		groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "witchcraft_potion_gpurple.png",
+		on_use = function(item, placer, pos)
+			item:replace("vessels:glass_bottle")
+			return item
+		end,
+	})
+
+	minetest.register_node("witchcraft:potion_gred", {
+		description = "Hunger Potion",
+		drawtype = "plantlike",
+		tiles = {"witchcraft_potion_gred.png"},
+		wield_image = "witchcraft_potion_gred.png",
+		paramtype = "light",
+		stack_max = 1,
+		is_ground_content = false,
+		walkable = false,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+		},
+		groups = {vessel=1,dig_immediate=3,attached_node=1, potion2=1},
+		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "witchcraft_potion_gred.png",
+		on_use = function(item, placer, pos)
+			item:replace("vessels:glass_bottle")
+			return item
+		end,
+	})
+
+	register_food("witchcraft:potion_gpurple", 10)
+	register_food("witchcraft:potion_gred", -4)
+else
+	minetest.register_node("witchcraft:potion_gpurple", {
+		description = "Filling Potion",
+		drawtype = "plantlike",
+		tiles = {"witchcraft_potion_gpurple.png"},
+		wield_image = "witchcraft_potion_gpurple.png",
+		paramtype = "light",
+		stack_max = 1,
+		is_ground_content = false,
+		walkable = false,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+		},
+		groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "witchcraft_potion_purple.png",
+		on_use = minetest.item_eat(20, "vessels:glass_bottle"),
+	})
 	
 	minetest.register_node("witchcraft:potion_gred", {
-	description = "Hunger Potion (better with hunger mod)",
-	drawtype = "plantlike",
-	tiles = {"witchcraft_potion_gred.png"},
-	wield_image = "witchcraft_potion_gred.png",
-	paramtype = "light",
-	stack_max = 1,
-	is_ground_content = false,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
-	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
-	sounds = default.node_sound_glass_defaults(),
-	inventory_image = "witchcraft_potion_gred.png",
-	on_use = function(itemstack, player)
-	local health = player:get_hp();
-	player:set_hp(health+10)
-	itemstack:replace("vessels:glass_bottle")
-	return itemstack
-	end,
-})
-})
+		description = "Hunger Potion",
+		drawtype = "plantlike",
+		tiles = {"witchcraft_potion_gred.png"},
+		wield_image = "witchcraft_potion_gred.png",
+		paramtype = "light",
+		stack_max = 1,
+		is_ground_content = false,
+		walkable = false,
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
+		},
+		groups = {vessel=1,dig_immediate=3,attached_node=1, potion=1},
+		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "witchcraft_potion_gred.png",
+		on_use = minetest.item_eat(-10, "vessels:glass_bottle"),
+	})
+
+	if minetest.get_modpath("hunger_ng") ~= nil then
+		local register_food = hunger_ng.add_hunger_data
+
+		register_food('witchcraft:potion_gpurple', {
+			satiates = 10,
+			returns = 'vessels:glass_bottle'
+		})
+
+		register_food('witchcraft:potion_gred', {
+			satiates = -4,
+			returns = 'vessels:glass_bottle'
+		})
+	end
 end
 
 minetest.register_node("witchcraft:potion_purple_2", {
