@@ -8,5 +8,6 @@ farming?
 lightning?
 pmobs?
 hud_hunger?
+hunger_ng?
 moreplants?
 horror?
