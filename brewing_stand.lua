@@ -13,7 +13,7 @@ minetest.register_node("witchcraft:brewing_stand", {
 		"witchcraft_brewing_stand_side.png"
 	},
 	drawtype = "nodebox",
-	use_texture_alpha = true,
+	use_texture_alpha = "blend",
 	paramtype = "light",
 	drop = {
 		items = {
@@ -36,14 +36,14 @@ minetest.register_node("witchcraft:brewing_stand", {
 		}
 	},
 	on_rightclick = function(pos, node, clicker, item, _)
-		local wield_item = clicker:get_wielded_item():get_name()
+		local wield_item = item:get_name()
 		local new_item = wield_item.."_2"
 		if minetest.get_item_group(wield_item, "potion") ~= 0 then
 			minetest.set_node(pos, {name="witchcraft:brewing_stand_active", param2=node.param2})
 			item:take_item()
 			minetest.after(30, function()
-			minetest.set_node(pos, {name="witchcraft:brewing_stand_unready", param2=node.param2})
-			minetest.add_item(pos, new_item)
+				minetest.set_node(pos, {name="witchcraft:brewing_stand_unready", param2=node.param2})
+				minetest.add_item(pos, new_item)
 			end)
 		end
 	end,
@@ -59,7 +59,7 @@ minetest.register_node("witchcraft:brewing_stand_active", {
 		"witchcraft_brewing_stand_side.png"
 	},
 	drawtype = "nodebox",
-	use_texture_alpha = true,
+	use_texture_alpha = "blend",
 	paramtype = "light",
 	light_source = 1, 
 	drop = {
@@ -96,7 +96,7 @@ minetest.register_node("witchcraft:brewing_stand_unready", {
 	},
 	inventory_image = "witchcraft_brewing_stand_inv.png",
 	drawtype = "nodebox",
-	use_texture_alpha = true,
+	use_texture_alpha = "blend",
 	paramtype = "light",
 	light_source = 1, 
 	drop = {
@@ -120,7 +120,7 @@ minetest.register_node("witchcraft:brewing_stand_unready", {
 		}
 	},
 	on_rightclick = function(pos, node, clicker, item, _)
-		local wield_item = clicker:get_wielded_item():get_name()
+		local wield_item = item:get_name()
 		if wield_item == "default:mese_crystal_fragment" then
 			minetest.set_node(pos, {name="witchcraft:brewing_stand", param2=node.param2})
 			item:take_item()
