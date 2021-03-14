@@ -674,7 +674,7 @@ for _, row in ipairs(witchcraft.pot_new) do --change 'pot_new' to 'pot' for the 
 			elseif wield_item == "bucket:bucket_water"
 			or wield_item == "bucket:bucket_river_water" then
 				minetest.set_node(pos, {name="witchcraft:pot_blue", param2=node.param2})
-				item:replace("bucket:bucket_empty")
+				itemstack:replace("bucket:bucket_empty")
 			elseif wield_item == "witchcraft:potion_"..combine then
 				minetest.set_node(pos, {name="witchcraft:pot_"..cresult, param2=node.param2})
 				itemstack:replace("vessels:glass_bottle")
